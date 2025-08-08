@@ -4,14 +4,72 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WGT Mini DApp (Sepolia)</title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:900px;margin:24px auto;padding:0 16px}
+    .card{border:1px solid #ddd;border-radius:14px;padding:16px;margin:12px 0}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .row>*{flex:1 1 260px}
+    button{padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;cursor:pointer}
+    button:disabled{opacity:.5;cursor:not-allowed}
+    input{padding:10px;border-radius:10px;border:1px solid #bbb;width:100%}
+    .muted{color:#666;font-size:.9em}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+    .ok{color:#0a7d32}.warn{color:#b85b00}.err{color:#b3001b}
+  </style>
 </head>
 <body>
-  <h1>WGT Mini DApp</h1>
+  <h1>WGT Mini DApp (Sepolia)</h1>
+  <p class="muted">コントラクト: <span class="mono">0xa814146ccE08EC174eC7A5ad05e8C350376f5A92</span>／ Chain: Sepolia (11155111)</p>
 
-  <button id="btnConnect">ウォレット接続</button>
-  <pre id="log" style="white-space:pre-wrap"></pre>
+  <div class="card">
+    <div class="row">
+      <button id="btnConnect">ウォレット接続</button>
+      <button id="btnRefresh" disabled>更新</button>
+    </div>
+    <p>あなた: <span id="who" class="mono">-</span></p>
+    <p>ETH: <span id="eth">-</span> / WGT: <span id="wgt">-</span> / Votes: <span id="votes">-</span></p>
+    <p>総供給: <span id="supply">-</span> / コントラクトETH: <span id="reserve">-</span></p>
+    <p id="netwarn" class="warn" style="display:none">⚠ Sepolia(11155111) に切り替えてください</p>
+  </div>
 
-  <!-- これだけ。ethersはここで読まない -->
+  <div class="card">
+    <h3>買う（Buy）</h3>
+    <div class="row">
+      <label>数量 (WGT)<input id="buyAmt" placeholder="例: 1" /></label>
+      <label>見積 (ETH)<input id="buyQuote" readonly /></label>
+    </div>
+    <div class="row">
+      <button id="btnQuoteBuy" disabled>見積 (quoteBuy)</button>
+      <button id="btnBuy" disabled>購入 (buy)</button>
+    </div>
+    <p class="muted">購入時は見積の <b>総額(= gross + fee)</b> をETHで支払います。スリッページ許容は+1%で送信。</p>
+  </div>
+
+  <div class="card">
+    <h3>売る（Sell）</h3>
+    <div class="row">
+      <label>数量 (WGT)<input id="sellAmt" placeholder="例: 0.1" /></label>
+      <label>受取見込 (ETH)<input id="sellQuote" readonly /></label>
+    </div>
+    <div class="row">
+      <button id="btnQuoteSell" disabled>見積 (quoteSell)</button>
+      <button id="btnSell" disabled>売却 (sell)</button>
+    </div>
+    <p class="muted">売却時は <b>net = gross - fee</b> が受取。スリッページ許容は-1%で送信。</p>
+  </div>
+
+  <div class="card">
+    <h3>投票権</h3>
+    <button id="btnDelegate" disabled>自己委任 (delegate)</button>
+    <p class="muted">Votes を有効にするには一度だけ <b>delegate(自分のアドレス)</b> が必要です。</p>
+  </div>
+
+  <div class="card">
+    <h3>ログ</h3>
+    <pre id="log" class="mono" style="white-space:pre-wrap"></pre>
+  </div>
+
+  <!-- ESM版のみ読み込み（CSPに優しい）。他のscriptは入れない -->
   <script type="module" src="./app.js"></script>
 </body>
 </html>
