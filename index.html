@@ -5,16 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WGT Mini DApp (Sepolia)</title>
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:900px;margin:24px auto;padding:0 16px}
+    body{font-family:system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;max-width:900px;margin:24px auto;padding:0 16px}
     .card{border:1px solid #ddd;border-radius:14px;padding:16px;margin:12px 0}
     .row{display:flex;gap:12px;flex-wrap:wrap}
-    .row>*{flex:1 1 260px}
+    .row > *{flex:1 1 260px}
     button{padding:10px 14px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;cursor:pointer}
     button:disabled{opacity:.5;cursor:not-allowed}
     input{padding:10px;border-radius:10px;border:1px solid #bbb;width:100%}
-    .muted{color:#666;font-size:.9em}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
-    .ok{color:#0a7d32}.warn{color:#b85b00}.err{color:#b3001b}.pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#f1f1f1;margin-left:8px}
+    .muted{color:#666;font-size:.9em}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
+    .ok{color:#0a7d32}
+    .warn{color:#b85b00}
+    .err{color:#b3001b}
+    .pill{display:inline-block;padding:2px 8px;border-radius:999px;background:#f1f1f1;margin-left:8px}
   </style>
+
+  <!-- ethers.js を先に読み込む -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.min.js"></script>
+
+  <!-- main.js を後で読み込む -->
+  <script src="./main.js" defer></script>
 </head>
 <body>
   <h1>WGT Mini DApp (Sepolia)</h1>
@@ -49,7 +59,7 @@
       <button id="btnQuoteBuy" disabled>見積 (quoteBuy)</button>
       <button id="btnBuy" disabled>購入 (buy)</button>
     </div>
-    <p class="muted">手数料はコントラクト設定（現在 1%）。購入時は <b>grossETH + feeETH</b> を value に送ります。</p>
+    <p class="muted">手数料: コントラクト設定に基づく（現在 1%）。購入時は <b>grossETH + feeETH</b> を自動で value に送ります。</p>
   </div>
 
   <div class="card">
@@ -70,7 +80,7 @@
       <button id="btnQuoteSell" disabled>見積 (quoteSell)</button>
       <button id="btnSell" disabled>売却 (sell)</button>
     </div>
-    <p class="muted">※ リザーブ不足やフロア割れの売りは失敗します。</p>
+    <p class="muted">※ 売却にはコントラクトのリザーブが必要。フロア未満になる売りは失敗します。</p>
   </div>
 
   <div class="card">
@@ -78,15 +88,12 @@
     <div class="row">
       <button id="btnDelegate" disabled>自己委任</button>
     </div>
-    <p class="muted">Votes は保有量とは別。<b>delegate(自分のアドレス)</b> で有効化。</p>
+    <p class="muted">Votes は保有量とは別。<b>delegate(自分のアドレス)</b> で有効化されます。</p>
   </div>
 
   <div class="card">
     <h3>ログ</h3>
     <pre id="log" class="mono" style="white-space:pre-wrap"></pre>
   </div>
-
-  <!-- CSP対応：外部JS（ESM）だけを読み込む -->
-  <script type="module" src="./app.js"></script>
 </body>
 </html>
